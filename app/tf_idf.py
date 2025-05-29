@@ -39,7 +39,7 @@ class TfidfSearchEngine:
     similarities = cosine_similarity(query_vec, self.tfidf_matrix).flatten()
     ranked_indices = similarities.argsort()[::-1][:top_k]
 
-    return [
+    results = [
       {
         "id": filtered_verses[i]["id"],
         "book": filtered_verses[i]["book"],
@@ -51,3 +51,5 @@ class TfidfSearchEngine:
       }
       for i in ranked_indices
     ]
+
+    return list(filter(lambda v: v["similarity"] > 0, results))
